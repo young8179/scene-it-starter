@@ -3,25 +3,21 @@ const button = document.getElementById("button")
 const box = document.getElementById("box")
 document.addEventListener('DOMContentLoaded', function() {
     // code here will execute after the document is loaded
-    var movieBox = document.getElementById("movies-container")
-    button.addEventListener("click", (event) =>{
-        event.preventDefault()
-        const searchString  =document.getElementById("search-bar").value
-        const urlEncodedSearchString = encodeURIComponent(searchString)
-        axios.get(`http://www.omdbapi.com/?apikey=3430a78&s=${urlEncodedSearchString}`)
-            .then((response)=>{
-                console.log(response.data)
-                
-                movieBox.innerHTML = renderMovies(movieData)
-            })
-            
-        // movieBox.innerHTML = renderMovies(movieData)
-    })
-    
+   saveToWatchlist(imdbID)
    
     
     
 });
+
+
+
+var movieBox = document.getElementById("movies-container")
+button.addEventListener("click", (event) =>{
+    event.preventDefault()
+    
+    movieBox.innerHTML = renderMovies(movieData)
+})
+
 
 function renderMovies(movieArray){
     const movieHtmlArray = movieArray.map((currentMovie) => {
@@ -52,34 +48,21 @@ function saveToWatchlist(imdbID){
         
         
     });
-    
     let watchlistJSON = localStorage.getItem("watchlist");
     let watchlist = JSON.parse(watchlistJSON)
-    
     if(watchlist ==null){
         watchlist = []
     }
     
     watchlist.push(movie)
-    number()
     watchlistJSON = JSON.stringify(watchlist);
     localStorage.setItem("watchlist", watchlistJSON);
     
-    function number(){
-        let num= 0
-        Object.keys(watchlist).map(
-            function(object){
-                num++
-                watchlist[object]["number"]=`${num}`
-            });
-            
-        }  
     
     console.log(watchlist)
 }
 
 
-    
 
 
 
