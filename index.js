@@ -1,17 +1,18 @@
 
 const button = document.getElementById("button")
 const box = document.getElementById("box")
+const form =document.getElementById("search-form")
 document.addEventListener('DOMContentLoaded', function() {
     // code here will execute after the document is loaded
     var movieBox = document.getElementById("movies-container")
-    button.addEventListener("click", (event) =>{
+    form.addEventListener("submit", (event) =>{
         event.preventDefault()
         const searchString  =document.getElementById("search-bar").value
         const urlEncodedSearchString = encodeURIComponent(searchString)
-        axios.get(`http://www.omdbapi.com/?apikey=3430a78&s=${urlEncodedSearchString}`)
+        axios.get(`http://www.omdbapi.com/?apikey=59354c85&s=${urlEncodedSearchString}`)
             .then((response)=>{
                 console.log(response.data)
-                
+                movieData = response.data.Search
                 movieBox.innerHTML = renderMovies(movieData)
             })
             
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderMovies(movieArray){
     const movieHtmlArray = movieArray.map((currentMovie) => {
         return `
-                <div class="col-lg-3 m-2" id="movies-container">
+                <div class="col-lg-4 mb-4" >
                     <div class="movie">
                         <div class="card" style="width: 20rem; height: 38rem;">
                             <img class="card-img-top" src="${currentMovie.Poster}">
@@ -47,6 +48,7 @@ function renderMovies(movieArray){
 
 function saveToWatchlist(imdbID){
     console.log(imdbID)
+    
     let movie =  movieData.find((currentMovie)=>{
         return currentMovie.imdbID == imdbID;
         
